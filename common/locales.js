@@ -1,4 +1,5 @@
 const gen = require('../build/generate_l10n_map');
+const path =require('path');
 
 const isServer = typeof gen === 'function';
 const prefix = isServer ? '/' : '';
@@ -13,12 +14,12 @@ try {
 const locales = isServer ? manifest : gen;
 
 function getLocale(name) {
-  return prefix + locales[`public/locales/${name}/send.ftl`];
+  return prefix + locales[`public/locales/${name}/send.ftl`.split('/').join(path.sep)];
 }
 
 function serverTranslator(name) {
   // eslint-disable-next-line security/detect-non-literal-require
-  return require(`../dist/${locales[`public/locales/${name}/send.ftl`]}`);
+  return require(`../dist/${locales[`public/locales/${name}/send.ftl`.split('/').join(path.sep)]}`);
 }
 
 function browserTranslator() {
